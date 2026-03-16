@@ -84,6 +84,31 @@ class TerminalBuffer(
         }
     }
 
+    fun insertText(text: String) {
+        for (ch in text) {
+            val visualWidth = ch.visualWidth()
+            if (cursorCol + visualWidth > width) {
+                cursorCol = 0
+                if (cursorRow < height - 1) {
+                    cursorRow++
+                } else {
+                    insertLineAtBottom()
+                }
+            }
+            when {
+                visualWidth == 2 -> {
+                    screen[cursorRow][cursorCol] = Cell(CellContent.Wide(ch), currentAttributes)
+                    screen[cursorRow][cursorCol + 1] = Cell(CellContent.Placeholder, currentAttributes)
+                    cursorCol += 2
+                }
+                else -> {
+                    screen[cursorRow][cursorCol] = Cell(CellContent.Char(ch), currentAttributes)
+                    cursorCol += 1
+                }
+            }
+        }
+    }
+
     fun fillLine(row: Int, char: Char? = null) {
         requireScreenRow(row)
         screen[row].fill(char, currentAttributes)
@@ -96,7 +121,7 @@ class TerminalBuffer(
         scrollback.addLast(evicted)
         while (scrollback.size > maxScrollback) scrollback.removeFirst()
 
-        if (cursorRow > 0) cursorRow--
+        if (cursorRow > 0 && cursorRow < height - 1) cursorRow--
     }
 
     fun clearScreen() {
