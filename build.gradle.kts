@@ -2,8 +2,8 @@ plugins {
     kotlin("jvm") version "2.3.0"
 }
 
-group = "org.example"
-version = "1.0-SNAPSHOT"
+group = "com.terminal"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -11,12 +11,13 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
-}
-
-kotlin {
-    jvmToolchain(25)
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.2")
 }
 
 tasks.test {
     useJUnitPlatform()
+}
+
+kotlin {
+    jvmToolchain(25)
 }
