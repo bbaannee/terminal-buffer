@@ -1,8 +1,8 @@
 package terminal
 
 class TerminalBuffer(
-    val width: Int,
-    val height: Int,
+    var width: Int,
+    var height: Int,
     val maxScrollback: Int = 1000,
 ){
     init{
@@ -196,6 +196,8 @@ class TerminalBuffer(
 
         cursorCol = cursorCol.coerceAtMost(newWidth - 1)
         cursorRow = cursorRow.coerceAtMost(newHeight - 1)
+        width = newWidth
+        height = newHeight
     }
 
     private fun screenLine(row: Int): TerminalLine = screen[row]
