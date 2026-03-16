@@ -1,8 +1,4 @@
-package org.example.terminal
-
-import terminal.Cell
-import terminal.CellAttributes
-import terminal.CellContent
+package terminal
 
 class TerminalLine(val width: Int) {
     private val cells: MutableList<Cell> = MutableList(width) {Cell.EMPTY}
